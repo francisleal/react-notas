@@ -5,7 +5,7 @@ class Links extends Component {
         return (
             <div>
                 <header>
-                    <p>LinksF</p>
+                    <p>Links</p>
                 </header>
             </div>
         );
