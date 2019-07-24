@@ -1,11 +1,16 @@
-import Home from './pages//Home';
+import Home from './pages/Home';
 import Anotacoes from './pages/Anotacoes';
-import Links from './pages//Links';
-import Senhas from './pages//Senhas';
+import Links from './pages/Links';
+import Senhas from './pages/Senhas';
 
 const routesConfig = [
     {
         path: '/',
+        componente: Home,
+        exact: true
+    },
+    {
+        path: '/home',
         componente: Home,
         exact: true
     },

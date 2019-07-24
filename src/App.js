@@ -26,11 +26,11 @@ class App extends Component {
         return (
             <div>
                 <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0">
-                    <span className="navbar-brand col-sm-3 col-md-2 mr-0 shadow"><img className="logo" src={logo} /> React-Notas </span>
+                    <span className="navbar-brand col-sm-3 col-md-2 mr-0 shadow"><img className="logo" alt='logo' src={logo} /> React-Notas </span>
                     <input className="form-control form-control-dark w-100" placeholder="Search" aria-label="Search" type="text" />
                     <ul className="navbar-nav px-3">
                         <li className="nav-item text-nowrap">
-                            <a className="nav-link" href="#">Sair</a>
+                            <span className="nav-link">Sair</span>
                         </li>
                     </ul>
                 </nav>
@@ -42,7 +42,7 @@ class App extends Component {
                         <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
                             <div className="sidebar-sticky">
                                 <ul className="nav flex-column">
-                                    <li onClick={() => { this.tituloPagina('Home') }} className="nav-item"><Link className="nav-link" to='/'>Home</Link></li>
+                                    <li onClick={() => { this.tituloPagina('Home') }} className="nav-item"><Link className="nav-link" to='/home'>Home</Link></li>
                                     <li onClick={() => { this.tituloPagina('Anotacoes') }} className="nav-item"><Link className="nav-link" to='/anotacoes'>Anotacoes</Link></li>
                                     <li onClick={() => { this.tituloPagina('Links') }} className="nav-item"><Link className="nav-link" to='/links'>Links</Link></li>
                                     <li onClick={() => { this.tituloPagina('Senha') }} className="nav-item"><Link className="nav-link" to='/senhas'>Senha</Link></li>
