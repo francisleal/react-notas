@@ -110,3 +110,8 @@ body {
   width: 1.5rem;
   height: 1.5rem;
 }
+
+button[type="button"] {
+  margin-left: 2px;
+  margin-right: 2px;
+}
