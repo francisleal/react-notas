@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 class Links extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             error: null,
             isLoaded: false,
@@ -12,28 +12,19 @@ class Links extends Component {
     }
 
     componentDidMount() {
-        const request = async () => {
-            let json = [];
 
-            try {
-                const response = await fetch('https://meus-dados-8d039.firebaseio.com/links.json');
-                const data = await response.json();
-                Object.values(data).forEach(links => { json.push(links) });
-
-                this.setState({
-                    isLoaded: true,
-                    links: json
-                });
-
-            } catch (error) {
-                this.setState({
-                    isLoaded: true,
-                    error: true
-                });
-            }
-        }
-
-        request();
+        fetch('https://meus-dados-8d039.firebaseio.com/links.json')
+            .then(response => response.json())
+            .then(
+                data => {
+                    let json = [];
+                    Object.values(data).forEach(links => { json.push(links) });
+                    this.setState({ isLoaded: true, links: json });
+                },
+                error => {
+                    this.setState({ isLoaded: true, error });
+                }
+            )
     }
 
     render() {
@@ -41,7 +32,7 @@ class Links extends Component {
         const { error, isLoaded, links } = this.state;
 
         if (error) {
-            return <div>Error - API não econtrada </div>;
+            return <div>Error - API não econtrada {error.message}</div>;
         } else if (!isLoaded) {
             return <div><i className='fas fa-circle-notch fa-w-16 fa-spin fa-lg'></i></div>;
         } else {
@@ -87,3 +78,25 @@ class Links extends Component {
 }
 
 export default Links;
+
+// const request = async () => {
+//     let json = [];
+
+//     try {
+//         const response = await fetch('https://meus-dados-8d039.firebaseio.com/links.json');
+//         const data = await response.json();
+//         Object.values(data).forEach(links => { json.push(links) });
+
+//         this.setState({
+//             isLoaded: true,
+//             links: json
+//         });
+
+//     } catch (error) {
+//         this.setState({
+//             isLoaded: true,
+//             error: true
+//         });
+//     }
+// }
+// request();
