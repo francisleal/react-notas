@@ -20,7 +20,7 @@ class Links extends Component {
     }
 
     componentDidMount() {
-        fetch('https://meus-dados-8d039.firebaseio.com/links.json')
+        fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json')
             .then(response => response.json())
             .then(
                 data => {
@@ -51,13 +51,21 @@ class Links extends Component {
 
         const { titulo, link, selectedRadio } = this.state;
 
-        let data = {
-            id: Math.random(),
+        let idTitulo = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
+
+        let arrayData = {
+            id: idTitulo,
             titulo: titulo,
-            link: link,
-            tipo: selectedRadio
+            url: link,
+            icon: selectedRadio
         };
-        console.log(data);
+        console.log(arrayData);
+
+        fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json', { method: 'POST', body: JSON.stringify(arrayData) })
+            .then(response => { return response.json() })
+            .then(data => { console.log('arrayData:', data) });
+
+            this.componentDidMount()
     }
 
     handleRadioChange(event) {
@@ -67,12 +75,7 @@ class Links extends Component {
     }
 
     limparCampos() {
-        this.setState({
-            selectedRadio: '',
-            titulo: '',
-            link: '',
-            tipo: ''
-        })
+        this.setState({ selectedRadio: '', titulo: '', link: '', tipo: '' })
     }
 
     render() {
