@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Link, Route } from 'react-router-dom';
 
-import routesConfig from "./routesConfig";
+import routesConfig from "./routes/routesConfig";
+
+import Login from "./pages/Login";
 
 const logo = require('./assets/logo.svg');
 
@@ -9,6 +11,9 @@ class App extends Component {
 
     render() {
         return (
+
+            // <Login />
+
             <div>
                 <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0">
                     <span className="navbar-brand col-sm-3 col-md-2 mr-0 shadow"><img className="logo" alt='logo' src={logo} /> React-Notas </span>
@@ -27,10 +32,11 @@ class App extends Component {
                         <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
                             <div className="sidebar-sticky">
                                 <ul className="nav flex-column">
-                                    <li className="nav-item"><Link className="nav-link" to='/home'>Home</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to='/anotacoes'>Anotacoes</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to='/links'>Links</Link></li>
-                                    <li className="nav-item"><Link className="nav-link" to='/senhas'>Senha</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/senhas'>Senhas</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/base64'>Base64</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/login'>Login</Link></li>
                                 </ul>
                             </div>
                         </nav>

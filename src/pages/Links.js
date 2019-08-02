@@ -19,19 +19,33 @@ class Links extends Component {
         this.handleRadioChange = this.handleRadioChange.bind(this)
     }
 
-    componentDidMount() {
-        fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json')
+
+    getAPILinks() {
+        return fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json')
+    }
+
+    onSuccessLinkRequest(data) {
+        let json = [];
+        Object.values(data).forEach(links => { json.push(links) });
+        this.setState({ isLoaded: true, links: json });
+
+        console.log(data)
+        console.log(json)
+    }
+
+    onErrorLinkRequest(error) {
+        this.setState({ isLoaded: true, error });
+    }
+
+    updateList() {
+        this.getAPILinks()
             .then(response => response.json())
-            .then(
-                data => {
-                    let json = [];
-                    Object.values(data).forEach(links => { json.push(links) });
-                    this.setState({ isLoaded: true, links: json });
-                },
-                error => {
-                    this.setState({ isLoaded: true, error });
-                }
-            );
+            .then(response => this.onSuccessLinkRequest(response))
+            .catch(error => this.onErrorLinkRequest(error))
+    }
+
+    componentDidMount() {
+        this.updateList()
     }
 
     handleTituloChange(event) {
@@ -51,10 +65,10 @@ class Links extends Component {
 
         const { titulo, link, selectedRadio } = this.state;
 
-        let idTitulo = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
+        let _id = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
 
         let arrayData = {
-            id: idTitulo,
+            id: _id,
             titulo: titulo,
             url: link,
             icon: selectedRadio
@@ -65,13 +79,22 @@ class Links extends Component {
             .then(response => { return response.json() })
             .then(data => { console.log('arrayData:', data) });
 
-            this.componentDidMount()
+        this.updateList()
     }
 
     handleRadioChange(event) {
         this.setState({
             selectedRadio: event.currentTarget.value
         })
+    }
+
+    delete(item) {
+        const links = this.state.links.filter(i => i.id !== item.id)
+        this.setState({ links });
+
+
+        this.updateList();
+        console.log(item);
     }
 
     limparCampos() {
@@ -194,7 +217,7 @@ class Links extends Component {
                                                         <td style={{ textAlign: 'right' }}>
                                                             <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button>
                                                             <button type="button" className="btn btn-primary btn-sm btn-light"><IconPen tamanho="16" /></button>
-                                                            <button type="button" className="btn btn-primary btn-sm btn-light"><IconTrash tamanho="16" /></button>
+                                                            <button type="button" onClick={this.delete.bind(this, link)} className="btn btn-primary btn-sm btn-light"><IconTrash tamanho="16" /></button>
                                                         </td>
                                                     </tr>
                                                 )

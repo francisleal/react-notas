@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 
-class Senhas extends Component {
+class Base64 extends Component {
     render() {
         return (
             <div>
                 <header>
-                    <p>Senhas</p>
+                    <p>Base64</p>
                 </header>
             </div>
         );
     }
 }
 
-export default Senhas;
+export default Base64;
