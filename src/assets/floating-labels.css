@@ -74,6 +74,16 @@
   color: #777;
 }
 
+.criar-nova-conta {
+  float: right;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.criar-nova-conta:hover {
+  text-decoration: underline;
+}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {
