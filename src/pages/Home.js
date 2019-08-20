@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import fire from '../config/Fire';
+import { fire } from '../config/Fire';
 import { Link, Route } from 'react-router-dom';
 
 import routesConfig from "../routes/routesConfig";

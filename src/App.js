@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { IconSpinner } from './assets/Icon';
 
-import fire from './config/Fire'
+import { fire } from './config/Fire'
 import Home from './pages/Home';
 import Login from './pages/Login';
 
@@ -10,6 +11,7 @@ class App extends Component {
         super();
         this.state = ({
             user: null,
+            isLoaded: false,
         });
         this.authListener = this.authListener.bind(this);
     }
@@ -20,18 +22,25 @@ class App extends Component {
 
     authListener() {
         fire.auth().onAuthStateChanged((user) => {
-            console.log(user);
             if (user) {
-                this.setState({ user });
-                localStorage.setItem('user', user.uid);
+                this.setState({ isLoaded: true, user: user });
+                // localStorage.setItem('user', user.uid);
             } else {
-                this.setState({ user: null });
-                localStorage.removeItem('user');
+                this.setState({ isLoaded: true, user: null });
+                // localStorage.removeItem('user');
             }
+            console.log('user ', user);
         });
     }
 
     render() {
+
+        const { isLoaded } = this.state;
+
+        if (!isLoaded) {
+            return <div><IconSpinner tamanho="16" /></div>;
+        }
+
         return (
             <div>
                 {this.state.user ? (<Home />) : (<Login />)}
