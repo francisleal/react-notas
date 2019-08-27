@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { IconSave, IconPen, IconTrash, IconList, IconSpinner } from '../assets/Icon';
 
+import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario, removerLinkFirebase } from '../config/Fire';
+
 class Links extends Component {
 
     constructor(props) {
@@ -13,39 +15,25 @@ class Links extends Component {
             selectedRadio: '',
             titulo: '',
             link: '',
-            tipo: ''
+            tipo: '',
+
+            fecharModal: ''
         }
 
         this.handleRadioChange = this.handleRadioChange.bind(this)
     }
 
-
-    getAPILinks() {
-        return fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json')
-    }
-
-    onSuccessLinkRequest(data) {
-        let json = [];
-        Object.values(data).forEach(links => { json.push(links) });
-        this.setState({ isLoaded: true, links: json });
-
-        console.log(data)
-        console.log(json)
-    }
-
-    onErrorLinkRequest(error) {
-        this.setState({ isLoaded: true, error });
-    }
-
-    updateList() {
-        this.getAPILinks()
-            .then(response => response.json())
-            .then(response => this.onSuccessLinkRequest(response))
-            .catch(error => this.onErrorLinkRequest(error))
-    }
-
     componentDidMount() {
-        this.updateList()
+        this._fetchLinks()
+    }
+
+    _fetchLinks() {
+        firebaseDatabase.ref(firebaseUsuario.currentUser.uid).on('value', (data) => {
+            this.setState({
+                links: Object.values(data.toJSON()),
+                isLoaded: true
+            });
+        });
     }
 
     handleTituloChange(event) {
@@ -60,41 +48,23 @@ class Links extends Component {
         this.setState({ link: event.target.value });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-
-        const { titulo, link, selectedRadio } = this.state;
-
-        let _id = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
-
-        let arrayData = {
-            id: _id,
-            titulo: titulo,
-            url: link,
-            icon: selectedRadio
-        };
-        console.log(arrayData);
-
-        fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json', { method: 'POST', body: JSON.stringify(arrayData) })
-            .then(response => { return response.json() })
-            .then(data => { console.log('arrayData:', data) });
-
-        this.updateList()
-    }
-
     handleRadioChange(event) {
         this.setState({
             selectedRadio: event.currentTarget.value
         })
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+        const { titulo, link, selectedRadio } = this.state;
+
+        let _id = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
+
+        salvarLinksFirebase(_id, titulo, link, selectedRadio);
+    }
+
     delete(item) {
-        const links = this.state.links.filter(i => i.id !== item.id)
-        this.setState({ links });
-
-
-        this.updateList();
-        console.log(item);
+        removerLinkFirebase(item.id);
     }
 
     limparCampos() {
@@ -236,6 +206,10 @@ class Links extends Component {
 
 export default Links;
 
+
+// const links = this.state.links.filter(i => i.id !== item.id)
+        // this.setState({ links });
+
 // const request = async () => {
 //     let json = [];
 
@@ -257,3 +231,34 @@ export default Links;
 //     }
 // }
 // request();
+
+
+
+
+    // getAPILinks() {
+    //     return fetch('https://meus-dados-8d039.firebaseio.com/linksReact.json')
+    // }
+
+    // onSuccessLinkRequest(data) {
+    //     let json = [];
+    //     Object.values(data).forEach(links => { json.push(links) });
+    //     this.setState({ isLoaded: true, links: json });
+
+    //     console.log(data)
+    //     console.log(json)
+    // }
+
+    // onErrorLinkRequest(error) {
+    //     this.setState({ isLoaded: true, error });
+    // }
+
+    // updateList() {
+    //     this.getAPILinks()
+    //         .then(response => response.json())
+    //         .then(response => this.onSuccessLinkRequest(response))
+    //         .catch(error => this.onErrorLinkRequest(error))
+    // }
+
+    // componentDidMount() {
+    //     this.updateList()
+    // }
