@@ -12,8 +12,11 @@ const firebaseConfig = {
 
 export const fire = firebase.initializeApp(firebaseConfig);
 
+export const database = firebase.database();
+
 export const loginFirebase = (email, senha) => {
     console.log(`logar - email ${email} - senha ${senha}`);
+
     firebase.auth().signInWithEmailAndPassword(email, senha).catch((error) => {
         console.log(error);
     });
@@ -27,5 +30,31 @@ export const criarNovaContaFirebase = (email, senha) => {
         console.log(error.message);
     });
 }
+
+export const salvar = (id, titulo, url) => {
+
+    const userId = firebase.auth().currentUser.uid;
+
+    firebase.database().ref(`${userId}/${id}`).set({
+        titulo: titulo,
+        url: url
+    }, function (error) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('saved successfully!');
+        }
+    });
+}
+
+export const getLinks = () => {
+
+    var userId = firebase.auth().currentUser.uid;
+
+    firebase.database().ref(userId).once('value', (data) => {
+        console.log(data.toJSON())
+    })
+}
+
 
 // export default fire;
