@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { IconSave, IconPen, IconTrash, IconList, IconSpinner } from '../assets/Icon';
+import ModalLinks from '../componentes/ModalLinks';
+import { IconPen, IconTrash, IconList, IconSpinner } from '../assets/Icon';
 
 import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario, removerLinkFirebase } from '../config/Fire';
 
@@ -12,15 +13,20 @@ class Links extends Component {
             isLoaded: false,
             links: [],
 
-            selectedRadio: '',
             titulo: '',
             link: '',
-            tipo: '',
-
-            fecharModal: ''
+            selectedRadio: ''
         }
 
+        this.handleSubmit = this.handleSubmit.bind(this)
+
+        this.handleTituloChange = this.handleTituloChange.bind(this)
+
+        this.handleLinkChange = this.handleLinkChange.bind(this)
+
         this.handleRadioChange = this.handleRadioChange.bind(this)
+
+        this.limparCampos = this.limparCampos.bind(this)
     }
 
     componentDidMount() {
@@ -44,14 +50,8 @@ class Links extends Component {
         this.setState({ link: event.target.value });
     }
 
-    handleTipoChange(event) {
-        this.setState({ link: event.target.value });
-    }
-
     handleRadioChange(event) {
-        this.setState({
-            selectedRadio: event.currentTarget.value
-        })
+        this.setState({ selectedRadio: event.target.value });
     }
 
     handleSubmit(event) {
@@ -68,7 +68,8 @@ class Links extends Component {
     }
 
     limparCampos() {
-        this.setState({ selectedRadio: '', titulo: '', link: '', tipo: '' })
+        this.setState({ titulo: '', link: '' });
+        document.querySelector('form').reset();
     }
 
     render() {
@@ -96,71 +97,19 @@ class Links extends Component {
                         </div>
                     </div>
 
-                    <div className="modal fade" id="myModal">
-                        <div className="modal-dialog">
-                            <div className="modal-content">
+                    <ModalLinks
+                        modalTitulo={this.state.titulo}
+                        tituloChange={this.handleTituloChange}
 
-                                <div className="modal-header">
-                                    <h4 className="modal-title">Adicionar novo link</h4>
-                                    <button type="button" className="close" data-dismiss="modal"></button>
-                                </div>
+                        modalLink={this.state.link}
+                        linkChange={this.handleLinkChange}
 
-                                <form onSubmit={this.handleSubmit.bind(this)} ref="form" className="was-validated" id="formLink">
-                                    {/* body modal */}
-                                    <div className="modal-body">
+                        radioChange={this.handleRadioChange}
 
-                                        <div className="form-group">
-                                            <label htmlFor="email">Título</label>
-                                            <input type="text" value={this.state.titulo} onChange={this.handleTituloChange.bind(this)} className="form-control" id="titulo" placeholder="informe título" name="titulo" required />
-                                        </div>
+                        ModalLimparCampos={this.limparCampos}
 
-                                        <div className="form-group">
-                                            <label htmlFor="pwd">Link</label>
-                                            <input type="text" value={this.state.link} onChange={this.handleLinkChange.bind(this)} className="form-control" id="link" placeholder="Informe novo link " name="link" required />
-                                        </div>
-
-                                        <div className="form-check-inline">
-                                            <div className="custom-control custom-radio">
-                                                <input type="radio" onChange={this.handleRadioChange} checked={this.state.selectedRadio === 'alm'} value="alm" className="custom-control-input" id="RadioAlm" name="radioTipo" required />
-                                                <label className="custom-control-label" htmlFor="RadioAlm">ALM</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-check-inline">
-                                            <div className="custom-control custom-radio">
-                                                <input type="radio" onChange={this.handleRadioChange} checked={this.state.selectedRadio === 'link'} value="link" className="custom-control-input" id="RadioLink" name="radioTipo" />
-                                                <label className="custom-control-label" htmlFor="RadioLink">Link</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-check-inline">
-                                            <div className="custom-control custom-radio">
-                                                <input type="radio" onChange={this.handleRadioChange} checked={this.state.selectedRadio === 'email'} value="email" className="custom-control-input" id="RadioEmail" name="radioTipo" />
-                                                <label className="custom-control-label" htmlFor="RadioEmail">E-mail</label>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-check-inline">
-                                            <div className="custom-control custom-radio">
-                                                <input type="radio" onChange={this.handleRadioChange} checked={this.state.selectedRadio === 'importante'} value="importante" className="custom-control-input" id="RadioImportante" name="radioTipo" />
-                                                <label className="custom-control-label" htmlFor="RadioImportante">Importante</label>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                    {/* footermodal */}
-                                    <div className="modal-footer">
-                                        <button type="submit" className="btn btn-primary">Salvar</button>
-                                        <button type="button" onClick={this.limparCampos.bind(this)} className="btn btn-danger" data-dismiss="modal">Fechar</button>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
+                        formSubmit={this.handleSubmit} >
+                    </ModalLinks>
 
                     <div className="card">
                         <div className="card-header">
@@ -185,7 +134,7 @@ class Links extends Component {
                                                         <td><a href={link.url} rel='noreferrer noopener' target='_blank'>{link.titulo}</a></td>
                                                         <td>{link.icon}</td>
                                                         <td style={{ textAlign: 'right' }}>
-                                                            <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button>
+                                                            {/* <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button> */}
                                                             <button type="button" className="btn btn-primary btn-sm btn-light"><IconPen tamanho="16" /></button>
                                                             <button type="button" onClick={this.delete.bind(this, link)} className="btn btn-primary btn-sm btn-light"><IconTrash tamanho="16" /></button>
                                                         </td>

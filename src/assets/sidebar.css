@@ -31,6 +31,10 @@ body {
   overflow-y: auto !important; /* Conteúdo com rolagem, se a viewport é menor que o conteúdo. */
 }
 
+.sidebar-sticky svg {
+  margin-right: 16px;
+}
+
 @supports ((position: -webkit-sticky) or (position: sticky)) {
   .sidebar-sticky {
     position: -webkit-sticky;

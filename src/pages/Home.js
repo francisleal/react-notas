@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { fire } from '../config/Fire';
 import { Link, Route } from 'react-router-dom';
 
+import { IconClipboard, IconExternalLink, IconUnlock, IconCode } from '../assets/Icon'
+
 import routesConfig from "../routes/routesConfig";
 
 const logo = require('../assets/logo.svg');
@@ -38,10 +40,10 @@ class Home extends Component {
                         <nav className="col-md-2 d-none d-md-block bg-dark sidebar">
                             <div className="sidebar-sticky">
                                 <ul className="nav flex-column">
-                                    <li className="nav-item"><Link className="nav-link" to='/anotacoes'>Anotacoes</Link></li>
-                                    <li className="nav-item"><Link className="nav-link" to='/links'>Links</Link></li>
-                                    <li className="nav-item"><Link className="nav-link" to='/senhas'>Senhas</Link></li>
-                                    <li className="nav-item"><Link className="nav-link" to='/base64'>Base64</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/anotacoes'><IconClipboard tamanho="14" /> anotacões</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/links'><IconExternalLink tamanho="16" /> Links</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/senhas'><IconUnlock tamanho="16" /> Senhas</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/base64'><IconCode tamanho="18" /> Base64</Link></li>
                                 </ul>
                             </div>
                         </nav>
