@@ -11,8 +11,7 @@ class ModalLinks extends Component {
                             <h4 className="modal-title">Adicionar novo link</h4>
                             <button type="button" className="close" data-dismiss="modal"></button>
                         </div>
-
-                        {/* onSubmit={this.props.formSubmit} */}
+                        
                         <form  onSubmit={this.props.formSubmit} className="was-validated" id="formLink">
 
                             <div className="modal-body">

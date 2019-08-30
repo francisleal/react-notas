@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import ModalLinks from '../componentes/ModalLinks';
-import { IconPen, IconTrash, IconList, IconSpinner } from '../assets/Icon';
+import CardLinks from  '../componentes/CardLinks';
+import { IconSpinner } from '../assets/Icon';
 
-import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario, removerLinkFirebase } from '../config/Fire';
+import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario } from '../config/Fire';
 
 class Links extends Component {
 
@@ -63,10 +64,6 @@ class Links extends Component {
         salvarLinksFirebase(_id, titulo, link, selectedRadio);
     }
 
-    delete(item) {
-        removerLinkFirebase(item.id);
-    }
-
     limparCampos() {
         this.setState({ titulo: '', link: '' });
         document.querySelector('form').reset();
@@ -111,42 +108,8 @@ class Links extends Component {
                         formSubmit={this.handleSubmit} >
                     </ModalLinks>
 
-                    <div className="card">
-                        <div className="card-header">
-                            <IconList tamanho="16" />  Lista de Links
-                        </div>
+                    <CardLinks links={links} />
 
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <table className="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Link</th>
-                                                <th>Tipo</th>
-                                                <th style={{ textAlign: 'right' }}>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {links.map((link) => {
-                                                return (
-                                                    <tr key={link.id}>
-                                                        <td><a href={link.url} rel='noreferrer noopener' target='_blank'>{link.titulo}</a></td>
-                                                        <td>{link.icon}</td>
-                                                        <td style={{ textAlign: 'right' }}>
-                                                            {/* <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button> */}
-                                                            <button type="button" className="btn btn-primary btn-sm btn-light"><IconPen tamanho="16" /></button>
-                                                            <button type="button" onClick={this.delete.bind(this, link)} className="btn btn-primary btn-sm btn-light"><IconTrash tamanho="16" /></button>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             );
         }
