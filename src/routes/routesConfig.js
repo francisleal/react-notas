@@ -3,6 +3,7 @@ import Links from '../pages/Links';
 import Senhas from '../pages/Senhas';
 import Base64 from '../pages/Base64';
 import Login from '../pages/Login';
+import Reservation from '../pages/Reservation';
 
 const routesConfig = [
     {
@@ -33,6 +34,11 @@ const routesConfig = [
     {
         path: '/login',
         component: Login,
+        exact: true
+    },
+    {
+        path: '/reservation',
+        component: Reservation,
         exact: true
     },
 ]

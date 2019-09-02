@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ModalLinks from '../componentes/ModalLinks';
-import CardLinks from  '../componentes/CardLinks';
+import CardLinks from '../componentes/CardLinks';
 import { IconSpinner } from '../assets/Icon';
 
 import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario } from '../config/Fire';
@@ -16,18 +16,8 @@ class Links extends Component {
 
             titulo: '',
             link: '',
-            selectedRadio: ''
+            tipo: ''
         }
-
-        this.handleSubmit = this.handleSubmit.bind(this)
-
-        this.handleTituloChange = this.handleTituloChange.bind(this)
-
-        this.handleLinkChange = this.handleLinkChange.bind(this)
-
-        this.handleRadioChange = this.handleRadioChange.bind(this)
-
-        this.limparCampos = this.limparCampos.bind(this)
     }
 
     componentDidMount() {
@@ -43,25 +33,17 @@ class Links extends Component {
         });
     }
 
-    handleTituloChange(event) {
-        this.setState({ titulo: event.target.value });
-    }
-
-    handleLinkChange(event) {
-        this.setState({ link: event.target.value });
-    }
-
-    handleRadioChange(event) {
-        this.setState({ selectedRadio: event.target.value });
+    modalLinkChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { titulo, link, selectedRadio } = this.state;
+        const { titulo, link, tipo } = this.state;
 
         let _id = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
 
-        salvarLinksFirebase(_id, titulo, link, selectedRadio);
+        salvarLinksFirebase(_id, titulo, link, tipo);
     }
 
     limparCampos() {
@@ -71,7 +53,7 @@ class Links extends Component {
 
     render() {
 
-        const { error, isLoaded, links } = this.state;
+        const { error, isLoaded } = this.state;
 
         if (error) {
             return <div>Error - API não econtrada --> {error.message}</div>;
@@ -80,36 +62,17 @@ class Links extends Component {
         } else {
             return (
                 <div>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h1 className="h4">Links</h1>
-
-                                <div className="btn-toolbar mb-2 mb-md-0">
-                                    <div className="btn-group mr-2">
-                                        <button type="button" className="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#myModal">Novo</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <ModalLinks
-                        modalTitulo={this.state.titulo}
-                        tituloChange={this.handleTituloChange}
-
-                        modalLink={this.state.link}
-                        linkChange={this.handleLinkChange}
-
-                        radioChange={this.handleRadioChange}
-
-                        ModalLimparCampos={this.limparCampos}
-
-                        formSubmit={this.handleSubmit} >
+                        titulo={this.state.titulo}
+                        link={this.state.link}
+                        tipo={this.tipo}
+                        
+                        modalLinkChange={this.modalLinkChange.bind(this)}
+                        ModalLimparCampos={this.limparCampos.bind(this)}
+                        formSubmit={this.handleSubmit.bind(this)} >
                     </ModalLinks>
 
-                    <CardLinks links={links} />
-
+                    <CardLinks links={this.state.links} />
                 </div>
             );
         }
@@ -118,6 +81,7 @@ class Links extends Component {
 
 export default Links;
 
+ /* <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button> */
 
 // const links = this.state.links.filter(i => i.id !== item.id)
         // this.setState({ links });

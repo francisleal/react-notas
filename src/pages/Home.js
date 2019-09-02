@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { fire } from '../config/Fire';
 import { Link, Route } from 'react-router-dom';
 
-import { IconClipboard, IconExternalLink, IconUnlock, IconCode } from '../assets/Icon'
+import { IconClipboard, IconExternalLink, IconUnlock, IconCode, IconConfig } from '../assets/Icon'
 
 import routesConfig from "../routes/routesConfig";
 
@@ -44,6 +44,7 @@ class Home extends Component {
                                     <li className="nav-item"><Link className="nav-link" to='/links'><IconExternalLink tamanho="16" /> Links</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to='/senhas'><IconUnlock tamanho="16" /> Senhas</Link></li>
                                     <li className="nav-item"><Link className="nav-link" to='/base64'><IconCode tamanho="18" /> Base64</Link></li>
+                                    <li className="nav-item"><Link className="nav-link" to='/reservation'><IconConfig tamanho="18" /> Reservation</Link></li>
                                 </ul>
                             </div>
                         </nav>
