@@ -14,6 +14,7 @@ class Links extends Component {
             isLoaded: false,
             links: [],
 
+            id: '',
             titulo: '',
             link: '',
             tipo: ''
@@ -33,22 +34,37 @@ class Links extends Component {
         });
     }
 
+    randomID(id) {
+        if (this.state.titulo === '') {
+            this.setState({ id });
+        }
+    }
+
     modalLinkChange(event) {
         this.setState({ [event.target.name]: event.target.value });
+        this.randomID(`${Math.random()}`.replace(/['.']/g, ''));
     }
 
     handleSubmit(event) {
         event.preventDefault();
-        const { titulo, link, tipo } = this.state;
-
-        let _id = `${titulo.toLowerCase().trim()}${Math.random()}`.replace(/\s/g, '').replace(/['.']/g, '');
-
-        salvarLinksFirebase(_id, titulo, link, tipo);
+        const { id, titulo, link, tipo } = this.state;
+        salvarLinksFirebase(id, titulo, link, tipo);
     }
 
     limparCampos() {
         this.setState({ titulo: '', link: '' });
         document.querySelector('form').reset();
+    }
+
+    edit(item) {
+        this.setState(
+            {
+                id: item.id,
+                titulo: item.titulo,
+                link: item.url,
+                tipo: item.icon
+            }
+        );
     }
 
     render() {
@@ -66,13 +82,13 @@ class Links extends Component {
                         titulo={this.state.titulo}
                         link={this.state.link}
                         tipo={this.tipo}
-                        
+
                         modalLinkChange={this.modalLinkChange.bind(this)}
                         ModalLimparCampos={this.limparCampos.bind(this)}
                         formSubmit={this.handleSubmit.bind(this)} >
                     </ModalLinks>
 
-                    <CardLinks links={this.state.links} />
+                    <CardLinks links={this.state.links} edit={this.edit.bind(this)} />
                 </div>
             );
         }
@@ -81,7 +97,7 @@ class Links extends Component {
 
 export default Links;
 
- /* <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button> */
+/* <button type="button" className="btn btn-primary btn-sm btn-success"><IconSave tamanho="16" /></button> */
 
 // const links = this.state.links.filter(i => i.id !== item.id)
         // this.setState({ links });

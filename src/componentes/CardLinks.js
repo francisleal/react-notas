@@ -10,6 +10,10 @@ class CardLinks extends Component {
         removerLinkFirebase(item.id);
     }
 
+    // edit(item) {
+    //     console.log(item);
+    // }
+
     render() {
 
         return (
@@ -36,7 +40,7 @@ class CardLinks extends Component {
                                                 <td><a href={link.url} rel='noreferrer noopener' target='_blank'>{link.titulo}</a></td>
                                                 <td>{link.icon}</td>
                                                 <td style={{ textAlign: 'right' }}>
-                                                    <button type="button" className="btn btn-primary btn-sm btn-light"><IconPen tamanho="16" /></button>
+                                                    <button type="button" onClick={this.props.edit.bind(this, link)} className="btn btn-primary btn-sm btn-light" data-toggle="modal" data-target="#myModal"><IconPen tamanho="16" /></button>
                                                     <button type="button" onClick={this.delete.bind(this, link)} className="btn btn-primary btn-sm btn-light"><IconTrash tamanho="16" /></button>
                                                 </td>
                                             </tr>
