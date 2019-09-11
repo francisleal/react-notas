@@ -17,7 +17,6 @@ export const firebaseDatabase = firebase.database();
 export const firebaseUsuario = firebase.auth();
 
 export const loginFirebase = (email, senha) => {
-
     firebaseUsuario
         .signInWithEmailAndPassword(email, senha)
         .catch((error) => {
@@ -26,7 +25,6 @@ export const loginFirebase = (email, senha) => {
 }
 
 export const criarNovaContaFirebase = (email, senha) => {
-
     firebaseUsuario
         .createUserWithEmailAndPassword(email, senha)
         .catch(function (error) {
@@ -36,9 +34,8 @@ export const criarNovaContaFirebase = (email, senha) => {
 }
 
 export const salvarLinksFirebase = (id, titulo, url, icon) => {
-
     firebaseDatabase
-        .ref(`${firebaseUsuario.currentUser.uid}/${id}`)
+        .ref(`${firebaseUsuario.currentUser.uid}/links/${id}`)
         .set({ id, titulo, url, icon }
             , error => {
                 if (error) {
@@ -52,7 +49,27 @@ export const salvarLinksFirebase = (id, titulo, url, icon) => {
 
 export const removerLinkFirebase = (id) => {
     firebaseDatabase
-        .ref(`${firebaseUsuario.currentUser.uid}/${id}`)
+        .ref(`${firebaseUsuario.currentUser.uid}/links/${id}`)
+        .remove()
+}
+
+export const salvarAnotacoesFirebase = (id, titulo, nota) => {
+    firebaseDatabase
+        .ref(`${firebaseUsuario.currentUser.uid}/anotacoes/${id}`)
+        .set({ id, titulo, nota }
+            , error => {
+                if (error) {
+                    console.log('error', error);
+                } else {
+                    console.log('saved successfully!');
+                }
+            }
+        );
+}
+
+export const removerAnotacoesFirebase = (id) => {
+    firebaseDatabase
+        .ref(`${firebaseUsuario.currentUser.uid}/anotacoes/${id}`)
         .remove()
 }
 

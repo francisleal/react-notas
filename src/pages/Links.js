@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import ModalLinks from '../componentes/ModalLinks';
-import CardLinks from '../componentes/CardLinks';
+import ModalLinks from '../componentes/links/ModalLinks';
+import CardLinks from '../componentes/links/CardLinks';
+import HeaderNotas from '../componentes/HeaderNotas';
 import { IconSpinner } from '../assets/Icon';
 
 import { salvarLinksFirebase, firebaseDatabase, firebaseUsuario } from '../config/Fire';
@@ -26,11 +27,18 @@ class Links extends Component {
     }
 
     _fetchLinks() {
-        firebaseDatabase.ref(firebaseUsuario.currentUser.uid).on('value', (data) => {
-            this.setState({
-                links: Object.values(data.toJSON()),
-                isLoaded: true
-            });
+        firebaseDatabase.ref(`${firebaseUsuario.currentUser.uid}/links`).on('value', (data) => {
+
+            let dataJson = data.toJSON();
+
+            if (dataJson !== null) {
+                this.setState({ links: Object.values(dataJson) });
+            } else {
+                this.setState({ links: [] });
+            }
+
+            this.setState({ isLoaded: true });
+
         });
     }
 
@@ -78,6 +86,9 @@ class Links extends Component {
         } else {
             return (
                 <div>
+
+                    <HeaderNotas titulo="Links" />
+
                     <ModalLinks
                         titulo={this.state.titulo}
                         link={this.state.link}

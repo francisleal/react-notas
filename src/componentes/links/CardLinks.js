@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
 
-import { IconPen, IconTrash, IconList } from '../assets/Icon';
+import { IconPen, IconTrash, IconList } from '../../assets/Icon';
 
-import { removerLinkFirebase } from '../config/Fire';
+import { removerLinkFirebase } from '../../config/Fire';
 
 class CardLinks extends Component {
 
     delete(item) {
         removerLinkFirebase(item.id);
     }
-
-    // edit(item) {
-    //     console.log(item);
-    // }
 
     render() {
 
@@ -25,7 +21,7 @@ class CardLinks extends Component {
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-12">
-                            <table className="table table-bordered">
+                            <table className="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Link</th>
